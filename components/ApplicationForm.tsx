@@ -1,5 +1,6 @@
 import styles from './ApplicationForm.module.css';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface ApplicationFormProps {
   lenderId: string;
@@ -20,6 +21,7 @@ type Status =
 interface FormState {
   [x: string]: string;
 }
+
 export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
   const { name = '', fields = [] } = data;
   const initialState = fields.reduce((fieldsObject, field) => {
@@ -71,6 +73,10 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
 
   return (
     <div className={styles.box}>
+      <Link href="/">
+        <a>All Lenders</a>
+      </Link>
+
       <h1 className={styles.title}>{name}</h1>
 
       <form onSubmit={onSubmit} className={styles.form}>
@@ -106,11 +112,11 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
         </button>
 
         {status === 'accepted' && (
-          <div className={styles.declined}>You have been accepted</div>
+          <div className={styles.accepted}>You have been accepted</div>
         )}
 
         {status === 'declined' && (
-          <div className={styles.accepted}>You have been accepted</div>
+          <div className={styles.declined}>You have been declined</div>
         )}
 
         {errorMessage && (
