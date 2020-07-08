@@ -1,16 +1,17 @@
 .box {
   max-width: 400px;
   margin: 50px auto;
-  border: 1px solid #999;
+  border: 1px solid #f0f0f0;
   border-radius: 2px;
-  background: #fefefe;
+  background: #fff;
   font-size: 18px;
+  box-shadow: rgba(33, 43, 54, 0.08) 0px 2px 16px 0px;
 }
 
 .title {
   margin: 0;
   padding: 20px;
-  background: #000;
+  background: rgb(25, 117, 248);
   color: #fff;
 }
 
@@ -32,13 +33,20 @@
   border: 1px solid #999;
 }
 
+.viewAllLink {
+  display: block;
+  margin: 20px;
+  color: rgb(25, 117, 248);
+}
+
 .submitButton {
   min-width: 100px;
   padding: 10px 20px;
-  background-color: #000;
+  background-color: rgb(25, 117, 248);
   color: #fff;
   border: 0;
   text-transform: uppercase;
+  font-size: 18px;
 }
 
 .submitButton[disabled] {

@@ -38,10 +38,12 @@ const IndexPage: FC = () => (
         display: block;
         padding: 30px;
         margin: 30px 0;
-        border: 1px solid #000;
         text-decoration: none;
         color: #000;
         text-transform: uppercase;
+        background-color: rgb(25, 117, 248);
+        color: #fff;
+        border-radius: 3px;
       }
     `}</style>
   </div>
