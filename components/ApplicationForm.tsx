@@ -10,13 +10,7 @@ interface ApplicationFormProps {
   };
 }
 
-type Status =
-  | 'idle'
-  | 'submitted'
-  | 'sending'
-  | 'error'
-  | 'accepted'
-  | 'declined';
+type Status = 'idle' | 'saving' | 'error' | 'accepted' | 'declined';
 
 interface FormState {
   [x: string]: string;
@@ -27,7 +21,6 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
   const initialState = fields.reduce((fieldsObject, field) => {
     return { ...fieldsObject, [field]: '' };
   }, {});
-  // const styles = {};
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [state, setState] = useState<FormState>(initialState);
@@ -42,7 +35,16 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setStatus('sending');
+    setStatus('saving');
+
+    const hasError = Object.keys(state).some((field) => state[field] === '');
+
+    if (hasError) {
+      setStatus('error');
+      setErrorMessage('All fields are required');
+
+      return;
+    }
 
     try {
       const response = await fetch(`/api/lenders/${lenderId}`, {
@@ -58,10 +60,12 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
 
       if (data.decision === 'accepted') {
         setStatus('accepted');
+        setErrorMessage('');
       }
 
       if (data.decision === 'declined') {
         setStatus('declined');
+        setErrorMessage('');
       }
     } catch (error) {
       setStatus('error');
@@ -74,7 +78,7 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
   return (
     <div className={styles.box}>
       <Link href="/">
-        <a>All Lenders</a>
+        <a className={styles.viewAllLink}>&lt; View All Lenders</a>
       </Link>
 
       <h1 className={styles.title}>{name}</h1>
@@ -105,10 +109,10 @@ export function ApplicationForm({ lenderId, data }: ApplicationFormProps) {
 
         <button
           className={styles.submitButton}
-          disabled={status === 'sending'}
+          disabled={status === 'saving'}
           type="submit"
         >
-          {status === 'sending' ? 'Saving...' : 'Save'}
+          {status === 'saving' ? 'Saving...' : 'Save'}
         </button>
 
         {status === 'accepted' && (
